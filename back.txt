@@ -1,0 +1,39 @@
+from flask import Flask, request, jsonify
+
+app = Flask(__name__)
+
+@app.route('/bfhl', methods=['GET', 'POST'])
+def bfhl():
+    if request.method == 'GET':
+        return jsonify({"operation_code": 1}), 200
+
+    if request.method == 'POST':
+        try:
+            data = request.json.get('data')
+            user_id = "marepalli_vishnu_vardhan"  # Replace with your full_name_dob
+            roll_number = "21BEC2508"
+            email = "vishnuvardhan2021@vitstudent.ac.in"
+
+            numbers = [item for item in data if item.isdigit()]
+            alphabets = [item for item in data if item.isalpha()]
+            lowercase_alphabets = [item for item in data if item.islower()]
+
+            highest_lowercase = [max(lowercase_alphabets)] if lowercase_alphabets else []
+
+            response = {
+                "is_success": True,
+                "user_id": user_id,
+                "email": email,
+                "roll_number": roll_number,
+                "numbers": numbers,
+                "alphabets": alphabets,
+                "highest_lowercase_alphabet": highest_lowercase
+            }
+
+            return jsonify(response), 200
+
+        except Exception as e:
+            return jsonify({"is_success": False, "error": str(e)}), 400
+
+if __name__ == '__main__':
+    app.run(debug=True)
